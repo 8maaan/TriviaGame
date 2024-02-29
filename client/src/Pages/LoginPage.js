@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import '../CSS-Pages/LoginRegisterPage.css'
 import { Button, TextField } from '@mui/material'
-import { database } from '../FirebaseAuth/FirebaseConfig';
-import { signInWithEmailAndPassword } from "firebase/auth"
 import { useNavigate } from 'react-router-dom';
+import { UserAuth } from '../Context-and-Routes/AuthContext';
 
-const RegisterPage = () => {
+const LoginPage = () => {
+    const { signIn } = UserAuth();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -15,22 +16,15 @@ const RegisterPage = () => {
         navigateTo('/register');
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // USING FIREBASE'S EMAIL AND PASSWORD SIGN-UP AUTHENTICATION
-        // SEE DOCUMENTATION HERE: https://firebase.google.com/docs/auth/web/password-auth#create_a_password-based_account
-        signInWithEmailAndPassword(database, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            // const user = userCredential.user;
-            navigateTo("/home");
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-        });
+        try{
+            await signIn(email, password);
+            navigateTo('/home');
+            console.log("You are logged in");
+        }catch (e) {
+            console.log(e.message);
+        }
     }
 
     return(
@@ -63,5 +57,5 @@ const RegisterPage = () => {
     )
 }
 
-export default RegisterPage;
+export default LoginPage;
 

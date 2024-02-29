@@ -2,8 +2,9 @@ import { useState } from 'react';
 import '../CSS-Pages/LoginRegisterPage.css'
 import { Button, TextField } from '@mui/material'
 import { database } from '../FirebaseAuth/FirebaseConfig';
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { updateProfile } from "firebase/auth"
 import { useNavigate } from 'react-router-dom';
+import { UserAuth } from '../Context-and-Routes/AuthContext'
 
 const RegisterPage = () => {
     const [username, setUsername] = useState("");
@@ -11,23 +12,19 @@ const RegisterPage = () => {
     const [password, setPassword] = useState("");
     const [retypePassword, setRetypePassword] = useState("");
 
+    const {createUser} = UserAuth();
+
     const navigateTo = useNavigate();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // USING FIREBASE'S EMAIL AND PASSWORD SIGN-UP AUTHENTICATION
-        // SEE DOCUMENTATION HERE: https://firebase.google.com/docs/auth/web/password-auth#create_a_password-based_account
-        createUserWithEmailAndPassword(database, email, password)
-        .then(() => {
-            console.log("Registration Success");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try{
+            await createUser(email, password)
             setProfile();
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-        })
+            console.log("Success");
+        }catch(e){
+            console.log(e.message)
+        }
 
     }
 

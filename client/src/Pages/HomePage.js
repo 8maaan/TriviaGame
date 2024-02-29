@@ -1,32 +1,32 @@
 import { Button } from "@mui/material";
-import { signOut } from "firebase/auth";
-import { database } from "../FirebaseAuth/FirebaseConfig";
 import { useNavigate } from "react-router-dom";
-
-
+import { UserAuth } from "../Context-and-Routes/AuthContext";
 
 const HomePage = () => {
+    const {user, logOut} = UserAuth();
+
     const navigateTo = useNavigate();
-    const user = database.currentUser;
+    // const user = database.currentUser;
     console.log(user);
 
-    const handleOnClick = () =>{
-        signOut(database)
-        .then(() => {
-            navigateTo("/");
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+    const handleLogout = async () => {
+        try{
+            await logOut()
+            navigateTo('/');
+            console.log('You are logged out')
+        }catch (e) {
+            console.log(e.message);
+        }
     }
 
     return(
         <div>
             <p>THIS IS THE HOMEPAGE</p>
-            <p>Hello {user.displayName}</p>
-            <p>Hello {user.email}</p>
-            <img src={user.photoURL} alt='profile'/>
-            <Button variant="contained" onClick={handleOnClick}>Sign Out</Button>
+            <p>Hello {user && user.displayName}</p>
+            <p>Hello {user && user.email}</p>
+            <img src={user && user.photoURL} alt='profile'/>
+            <br></br>
+            <Button variant="contained" onClick={handleLogout}>Sign Out</Button>
         </div>
     )
 }
