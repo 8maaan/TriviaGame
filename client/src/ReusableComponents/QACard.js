@@ -1,15 +1,20 @@
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../CSS-ReusableComponents/QAGenerator.css'
 
-export const QuestionCard = ({ question, handleSelectedAnswer }) => {
+export const QACard = ({ question, handleSelectedAnswer }) => {
+    
+    const [shuffledAnswers, setShuffledAnswers] = useState([]);
+    const [clickedAnswer, setClickedAnswer] = useState(null);
+
     const decodeHtmlEntities = (html) => {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         return doc.body.textContent;
     };
 
-    const getAnswer = (answer) =>{
-        handleSelectedAnswer(answer)   
+    const getAnswer = (answer, index) =>{
+        setClickedAnswer(index);
+        handleSelectedAnswer(answer)  
     }
 
     const shuffleAnswers = (correctAnswer, incorrectAnswers) => {
@@ -20,6 +25,16 @@ export const QuestionCard = ({ question, handleSelectedAnswer }) => {
         }
         return allAnswers;
     };
+    
+    useEffect(() => {
+        // Shuffle answers only when the component mounts or when the question prop changes
+        const shuffled = shuffleAnswers(question.correct_answer, question.incorrect_answers);
+        setShuffledAnswers(shuffled);
+    
+        // Reset clickedAnswer when the question prop changes
+        setClickedAnswer(null);
+    }, [question.correct_answer, question.incorrect_answers, question]);
+
 
     return (
         <div className='card-main'>
@@ -31,13 +46,14 @@ export const QuestionCard = ({ question, handleSelectedAnswer }) => {
                 </div>
 
                 <div className='card-choices-container'>
-                    {shuffleAnswers(question.correct_answer, question.incorrect_answers).map((answer, index) => (
+                    {shuffledAnswers.map((answer, index) => (
                         <div key={index} className="card-choices">
                             <Button
                                 variant="contained"
                                 fullWidth
-                                onClick={() => { getAnswer(answer) }}
-                                classes={{ containedPrimary: 'card-choices-buttons' }}
+                                color={clickedAnswer === index ? (answer === question.correct_answer ? "success" : "error") : "primary"}
+                                onClick={() => { getAnswer(answer, index) }}
+                                classes={{ contained: 'card-choices-buttons' }}
                             >
                                 {decodeHtmlEntities(answer)}
                             </Button>

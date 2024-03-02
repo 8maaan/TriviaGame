@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { generateQuestions } from '../API-Services/triviaAPI';
-import { QuestionCard } from '../ReusableComponents/QAGenerator';
+import { QACard } from '../ReusableComponents/QACard';
 
 const decodeHtmlEntities = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -15,13 +15,21 @@ const TriviaPage = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
 
+    // PLAYER SCORE
+    const [score, setScore] = useState(0);
+
 
     const currentQuestion = trivia.results && trivia.results[currentQuestionIndex];
 
     const handleSelectedAnswer = (choice) => {
         if(decodeHtmlEntities(currentQuestion.correct_answer) === decodeHtmlEntities(choice)){
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setScore((prevScore) => prevScore + 1);
         }
+
+        // setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setTimeout(() => {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }, 1000);
     }
 
     useEffect(() => {
@@ -34,19 +42,26 @@ const TriviaPage = () => {
                 console.log(result.error);
                 setErrorMessage(result.error);
             }
-        }    
-        return () =>{
-            getQuestions();
         }
         
+        // THIS IS INTENDED
+        return () =>{
+            getQuestions();
+        }    
     },[])
 
     
     return (
         <div>
-            {currentQuestion ? (
-                <QuestionCard question={currentQuestion} handleSelectedAnswer={handleSelectedAnswer}/>             
-            ):<p>{errorMessage}</p>}
+            {trivia.results ? (
+                currentQuestion ? (
+                    <QACard question={currentQuestion} handleSelectedAnswer={handleSelectedAnswer} />
+                ) : (
+                    <p>{currentQuestionIndex === 5 ? `Good job! Your final score is ${score} / ${currentQuestionIndex}` : <></>}</p>
+                )
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     )
 }

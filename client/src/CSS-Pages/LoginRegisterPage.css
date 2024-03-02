@@ -3,11 +3,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url("https://i.imgur.com/QjI0J9P.jpeg");
+    background-size: cover;
 }
 
 .register-form-container {
     margin: 0 auto;
-    width: 25%;
+    width: 30rem;
     border: solid black 1px;
     border-radius: 15px;
     border-color: gray;
@@ -15,6 +17,7 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
+    background-color: white;
 }
 
 .register-form-fields {
@@ -29,8 +32,9 @@
     text-align: left;
 }
 
-@media screen and (max-width: 768px) {
+
+@media (max-width: 600px) {
     .register-form-container {
-        width: 90%;
+        width: 20.5rem;
     }
 }

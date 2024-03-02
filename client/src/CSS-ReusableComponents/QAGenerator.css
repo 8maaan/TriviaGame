@@ -7,19 +7,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url("https://i.imgur.com/QjI0J9P.jpeg");
+    background-size: cover;
+    
 }
 
 .card-container{
-    border: solid red;
+    border: solid rgb(6, 41, 41);
+    background-color: rgba(255, 255, 255, 0.70);
     border-radius: 20px;
-    width: 90%;
-    min-height: 80vh;
+    width: 80%;
+    /* min-height: 80vh; */
     padding: 3rem;
 }
 
 .card-questions-container{
     min-height: 65vh;
-    border: solid purple;
+    /* border: solid purple; */
 }
 
 .card-category{
@@ -27,15 +31,14 @@
     width: 100%;
     font-size: 1.15rem;
     text-align: left;
-    margin: auto 0;
     margin-top: 5px;
-    border: solid black 1px;
+    /* border: solid black 1px; */
 }
 
 .card-question{
     width: 100%;
     font-size: 3rem;
-    border: solid  1px black;
+    /* border: solid black 1px; */
 }
 
 .card-choices-container{
@@ -43,41 +46,45 @@
     align-items: center;
     justify-content: center;
     /* margin-top: 1.5rem; */
-    border: solid black 1px;
+    /* border: solid black 1px; */
     min-height: 10vh;
     flex-wrap: wrap;
 }
 
 .card-choices{
-    border: solid black 1px;
-    width: 20%;
-    min-width: 60px;
+    /* border: solid black 1px; */
+    width: 35%;
+    /* min-width: 60px; */
     margin: 5px;
     text-align: center;
 }
 
-.MuiButton-containedPrimary.card-choices-buttons {
-    height: 4rem;
-    font-size: 1.5rem;
+.MuiButton-contained.card-choices-buttons {
+    height: 5rem;
+    font-size: 1rem; 
 }
 
 @media (max-width: 600px) {
     .card-choices {
-        width: 45%;
+        width: 85%;
     }
     .card-container {
         width: 95%; 
     }
 
     .card-question {
-        font-size: 2.5rem; 
+        font-size: 2rem; 
     }
 
     .card-category {
         font-size: 1rem; 
     }
 
-    .MuiButton-containedPrimary.card-choices-buttons {
+    .card-questions-container{
+        min-height: 50vh;
+    }
+
+    .MuiButton-contained.card-choices-buttons {
         height: 5rem;
         font-size: 1rem;
     }

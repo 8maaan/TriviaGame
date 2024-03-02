@@ -12,7 +12,7 @@ import TriviaPage from './Pages/TriviaPage';
 function App() {
   
   return (
-    <div className="App">
+    <div style={{textAlign:'center'}}>
       <AuthContextProvider>
         <BrowserRouter>
           <Routes>
@@ -23,8 +23,7 @@ function App() {
             {/* PROTECTED ROUTES */}
             <Route path="/home" element={<ProtectedRoute><HomePage/></ProtectedRoute>} />
 
-            {/* TBD */}
-            <Route path="/trivia" element={<TriviaPage/>} />
+            <Route path="/trivia" element={<ProtectedRoute><TriviaPage/></ProtectedRoute>} />
           </Routes>
         </BrowserRouter>     
       </AuthContextProvider>
